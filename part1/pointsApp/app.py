@@ -3,7 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://student:examen@db:5432/points'
+# i added this below ########################
+# db_user = os.environ.get("POSTGRES_USER", "user")
+# db_password = os.environ.get("POSTGRES_PASSWORD", "password")
+# db_name = os.environ.get("POSTGRES_DB", "exampledb")
+#############################################
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@db:5432/exampledb'
 db = SQLAlchemy(app)
 
 class Student(db.Model):
@@ -40,4 +45,4 @@ if __name__ == '__main__':
         db.create_all()
 
     # Run the application
-    app.run(debug=True, host='127.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=8000)
