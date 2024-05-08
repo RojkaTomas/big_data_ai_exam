@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: exam-tomasrojka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: nathansegers/big_data_and_ai-24_may_frontend:versie1
+        ports:
+        - containerPort: 80
+        env:
+        - name: API_PORT
+          value: "80"
+        - name: API_HOST
+          value: "api"
+        - name: NAME
+          value: "Nathan Segers"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: exam-tomasrojka
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+  nodeSelector:
+    <node-label-key>: k3d-k3s-default-agent-2
+  tolerations:
+    - key: <toleration-key>
+      operator: <toleration-operator>
+      value: <toleration-value>
+      effect: <toleration-effect>
