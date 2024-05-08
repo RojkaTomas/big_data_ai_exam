@@ -3,13 +3,19 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
-# i added this below ########################
-# db_user = os.environ.get("POSTGRES_USER", "user")
-# db_password = os.environ.get("POSTGRES_PASSWORD", "password")
-# db_name = os.environ.get("POSTGRES_DB", "exampledb")
-#############################################
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@db:5432/exampledb'
+
+# Get environment variables or use default values
+db_user = os.environ.get("POSTGRES_USER", "user")
+db_password = os.environ.get("POSTGRES_PASSWORD", "password")
+db_name = os.environ.get("POSTGRES_DB", "exampledb")
+db_host = os.environ.get("DB_HOST", "db")  # This should match the service name in Docker Compose
+
+# Configure the database URI using environment variables
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@db:5432/{db_name}'
 db = SQLAlchemy(app)
+
+# Define the rest of your Flask application as before...
+
 
 class Student(db.Model):
     __tablename__ = 'students'
